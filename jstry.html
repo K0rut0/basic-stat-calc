@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <form id="formCont">
+            <input id="numbers" type="text">
+            <input id="submit" type="submit">
+        </form>
+        
+        <div id = "result">
+
+        </div>
+
+        <script>
+            
+            let inputField = document.getElementById("numbers");
+            let sumArr = (arr) => {
+                return arr.reduce((prev, current) => prev+current, 0);
+            }
+            let meanArr = (arr) => {
+                let sum = sumArr(arr);
+                let mean = sum/arr.length;
+                return mean;
+            }
+            let mediArr = (arr) => {
+                let length = arr.length;
+                if(arr.length%2 == 0){
+                    let medB = arr.length / 2;
+                    let medA = medB - 1;
+                    let median = arr[medA] + arr[medB];
+                    console.log(arr[medA]);
+                    console.log(arr[medB]);
+
+                    return median/2
+                    
+                } else {
+                    return arr[(length-1)/2];
+                }
+            }
+            let modeArr = (arr) => {
+                let modeObjectArr = [];
+                let count = 1;
+                let currIndex = 0;
+                for(let i = 0; i<arr.length-1;i++){
+                    if(arr[i]==arr[i+1]){
+                        count++;
+                    } else {
+                        count = 1;
+                        
+                    }
+                    modeObjectArr[currIndex] = {frequency: count, number: arr[i]};
+                    currIndex++;
+                }
+                let currHighest = 0;
+                let currNum = [];
+                let numIndex = 0;
+
+                for(let i = 0; i<modeObjectArr.length; i++){
+                    if(modeObjectArr[i].frequency>currHighest){
+                        currHighest = modeObjectArr[i].frequency
+                    }
+                }
+                for(let i = 0; i<modeObjectArr.length; i++){
+                    if(currHighest==modeObjectArr[i].frequency){
+                        currNum[numIndex] = modeObjectArr[i].number;
+                        numIndex++;
+                    }
+                }
+                let result =  {
+                    frequency: currHighest,
+                    freqNums: currNum
+                }
+
+                return result;
+            }
+            let stdDevArr = (arr) =>{
+                let mean = meanArr(arr);
+                let sqrdSub = [];
+                for(let i = 0; i<arr.length; i++){
+                    sqrdSub[i] = (arr[i]-mean)*(arr[i]-mean);
+                }
+                let sum = 0;
+                for(let i = 0; i<sqrdSub.length;i++){
+                    sum+=sqrdSub[i];
+                }
+                let divided = sum/(arr.length-1);
+                let variance = divided;
+                let stdDeviation = Math.sqrt(variance);
+
+                let stdDev = {
+                    stdDeviation: stdDeviation,
+                    variance: variance
+                }
+                return stdDev;
+            }
+            document.getElementById("formCont").addEventListener("submit", function(event){
+                event.preventDefault();
+                let inputVal = inputField.value;
+                let numArr = inputVal.split(/[\s\,\t\n\ ]+/g).map(Number);
+                numArr.sort(function(a, b){
+                    if(a > b) return 1;
+                    if(a == b) return 0;
+                    if(a < b) return -1;
+                });
+                console.log(numArr);
+                console.log(numArr.length);
+                let sum = sumArr(numArr);
+                let mean = meanArr(numArr);
+                let median = mediArr(numArr);
+                let mode = modeArr(numArr);
+                let random = 0
+                let stdDeviation = stdDevArr(numArr);
+
+                let uid = `${Date.now()}a${random}`;
+                let newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Sorted array: ${numArr}`;
+                random++;
+
+                uid = `${Date.now()}a${random}`;
+                newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Sum of the array: ${sum}`;
+                random++;
+
+                uid = `${Date.now()}a${random}`;
+                newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Mean of the array: ${mean}`;
+                random++;
+
+                uid = `${Date.now()}a${random}`;
+                newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Median of the array: ${median}`;
+                random++;
+
+                uid = `${Date.now()}a${random}`;
+                newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Mode of the array: ${mode.freqNums}`;
+                random++;
+
+                uid = `${Date.now()}a${random}`;
+                newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Frequency of the mode: ${mode.frequency}`;
+                random++;
+
+                uid = `${Date.now()}a${random}`;
+                newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Standard Deviation of the array: ${stdDeviation.stdDeviation}`;
+                random++;
+
+                uid = `${Date.now()}a${random}`;
+                newDiv = document.createElement("div");
+                newDiv.id = uid;
+                newDiv.className = "resultOut";
+                document.getElementById("result").appendChild(newDiv);
+                document.getElementById(uid).innerHTML = `Variance of the array: ${stdDeviation.variance}`;
+                
+            })
+        </script>
+    </body>
+</html>
